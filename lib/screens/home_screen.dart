@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/src/intl/date_format.dart';
-import 'package:soccer_info/cubits/leagues_cubit.dart';
+import 'package:soccer_info/cubits/leagues/leagues_cubit.dart';
+import 'package:soccer_info/widgets/appbar.dart';
 import 'package:soccer_info/widgets/container/home_screen_container.dart';
 import 'package:soccer_info/widgets/league_tile.dart';
 
@@ -22,14 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => LeaguesDataCubit(),
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(239, 241, 243, 1),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Image.asset(
-            "images/logo.png",
-            height: 20,
-          ),
-          centerTitle: true,
-        ),
+        appBar: const MyAppBar(),
         body: BlocBuilder<LeaguesDataCubit, LeaguesDataState>(
           builder: (context, state) {
             void selectLeagueHandler(String? newValue) {

@@ -58,11 +58,22 @@ class LeagueTile extends StatelessWidget {
             itemBuilder: (context, matchIndex) {
               Team home = league.matches[matchIndex].home;
               Team away = league.matches[matchIndex].away;
-
+              String matchId = league.matches[matchIndex].id;
               String status = league.matches[matchIndex].status;
               String? time = league.matches[matchIndex].time;
-              return MatchTile(
-                  home: home, away: away, status: status, time: time);
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    "/match",
+                    arguments: {
+                      "id": matchId,
+                    },
+                  );
+                },
+                child: MatchTile(
+                    home: home, away: away, status: status, time: time),
+              );
             },
           )
         ],
