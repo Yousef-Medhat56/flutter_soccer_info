@@ -67,3 +67,43 @@ class MatchScore extends StatelessWidget {
     );
   }
 }
+
+class MatchScoreVarient extends StatelessWidget {
+  final String status;
+  final String? homeGoals;
+  final String? awayGoals;
+
+  const MatchScoreVarient({
+    super.key,
+    required this.status,
+    this.homeGoals,
+    this.awayGoals,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(
+        awayGoals ?? "-",
+        style: TextStyle(
+            color: Colors.green.shade300,
+            fontWeight: FontWeight.bold,
+            fontSize: 22),
+      ),
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+        child: Text(status,
+            style: TextStyle(
+              color: Colors.grey.shade700,
+              fontWeight: FontWeight.bold,
+            )),
+      ),
+      Text(homeGoals ?? "-",
+          style: TextStyle(
+              color: Colors.green.shade300,
+              fontWeight: FontWeight.bold,
+              fontSize: 22)),
+    ]);
+  }
+}
