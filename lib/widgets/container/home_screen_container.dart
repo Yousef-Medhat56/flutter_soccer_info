@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soccer_info/widgets/container/main_container.dart';
 import 'package:soccer_info/widgets/date_picker.dart';
 import 'package:soccer_info/widgets/days_scroll.dart';
 import 'package:soccer_info/widgets/leagues_dropdown.dart';
@@ -28,13 +29,7 @@ class HomeScreenContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
+    return MainContainer(
       child: Column(
         children: [
           Row(
