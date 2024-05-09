@@ -71,17 +71,35 @@ class Match {
       };
 }
 
+class Scorer {
+  final String name;
+  final String time;
+
+  Scorer({required this.name, required this.time});
+  factory Scorer.fromJson(Map<String, dynamic> json) => Scorer(
+        name: json["name"],
+        time: json["time"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "time": time,
+      };
+}
+
 class Team {
   final String name;
   final String img;
   final String url;
   final String? goals;
+  final List<Scorer>? scorers;
 
   Team({
     required this.name,
     required this.img,
     required this.url,
     this.goals,
+    this.scorers,
   });
 
   factory Team.fromJson(Map<String, dynamic> json) => Team(
@@ -89,6 +107,7 @@ class Team {
         img: json["img"],
         url: json["url"],
         goals: json["goals"],
+        scorers: _parseScorers(json["scorers"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,5 +115,15 @@ class Team {
         "img": img,
         "url": url,
         "goals": goals,
+        "scorers": scorers?.map(
+          (e) => e.toJson(),
+        ),
       };
+
+  static List<Scorer>? _parseScorers(dynamic scorersJson) {
+    if (scorersJson is List) {
+      return scorersJson.map((json) => Scorer.fromJson(json)).toList();
+    }
+    return null;
+  }
 }
