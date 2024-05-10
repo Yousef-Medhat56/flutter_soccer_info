@@ -7,6 +7,7 @@ import 'package:soccer_info/widgets/container/main_container.dart';
 import 'package:soccer_info/widgets/container/match_overview_container.dart';
 import 'package:soccer_info/widgets/container/match_statbars_container.dart';
 import 'package:soccer_info/widgets/container/match_stats_container.dart';
+import 'package:soccer_info/widgets/loading_spinner.dart';
 
 class MatchScreen extends StatelessWidget {
   const MatchScreen({super.key});
@@ -36,24 +37,10 @@ class MatchScreen extends StatelessWidget {
                     }
                     return state.when(
                       initial: () {
-                        return SizedBox(
-                          height: 300,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.green.shade300,
-                            ),
-                          ),
-                        );
+                        return const LoadingSpinner(height: 300);
                       },
                       loading: () {
-                        return SizedBox(
-                          height: 300,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.green.shade300,
-                            ),
-                          ),
-                        );
+                        return const LoadingSpinner(height: 300);
                       },
                       success: (data) {
                         return MatchOverviewContainer(data: data);
@@ -64,50 +51,30 @@ class MatchScreen extends StatelessWidget {
                     );
                   },
                 ),
-                BlocBuilder<MatchStatsCubit, MatchStatsState>(
-                  builder: (context, state) {
-                    if (state == const MatchStatsState.initial()) {
-                      context
-                          .read<MatchStatsCubit>()
-                          .fetchMatchOverview(matchId);
-                    }
-                    return state.when(
-                      initial: () {
-                        return MatchStatsContainer(
-                          child: SizedBox(
-                            height: 60,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.green.shade300,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      loading: () {
-                        return MatchStatsContainer(
-                          child: SizedBox(
-                            height: 60,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.green.shade300,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      success: (data) {
-                        return MatchStatsContainer(
-                          child: MatchStatBarsContainer(data: data),
-                        );
-                      },
-                      error: ((errorMessage) => MatchStatsContainer(
-                            child: Center(
+                MatchStatsContainer(
+                  child: BlocBuilder<MatchStatsCubit, MatchStatsState>(
+                    builder: (context, state) {
+                      if (state == const MatchStatsState.initial()) {
+                        context
+                            .read<MatchStatsCubit>()
+                            .fetchMatchOverview(matchId);
+                      }
+                      return state.when(
+                        initial: () {
+                          return const LoadingSpinner(height: 60);
+                        },
+                        loading: () {
+                          return const LoadingSpinner(height: 60);
+                        },
+                        success: (data) {
+                          return MatchStatBarsContainer(data: data);
+                        },
+                        error: ((errorMessage) => Center(
                               child: Text(errorMessage),
-                            ),
-                          )),
-                    );
-                  },
+                            )),
+                      );
+                    },
+                  ),
                 )
               ],
             ),

@@ -5,6 +5,7 @@ import 'package:soccer_info/cubits/leagues/leagues_cubit.dart';
 import 'package:soccer_info/widgets/appbar.dart';
 import 'package:soccer_info/widgets/container/home_screen_container.dart';
 import 'package:soccer_info/widgets/league_tile.dart';
+import 'package:soccer_info/widgets/loading_spinner.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,18 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 List<String> leagueNames = ["الكل"];
 
                 return HomeScreenContainer(
-                  leagueValue: leagueValue,
-                  leagueNames: leagueNames,
-                  selectLeagueHandler: selectLeagueHandler,
-                  shownDay: shownDay,
-                  onPickDayHandler: onPickDayHandler,
-                  onTapDayHandler: onTapDayHandler,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.green.shade300,
-                    ),
-                  ),
-                );
+                    leagueValue: leagueValue,
+                    leagueNames: leagueNames,
+                    selectLeagueHandler: selectLeagueHandler,
+                    shownDay: shownDay,
+                    onPickDayHandler: onPickDayHandler,
+                    onTapDayHandler: onTapDayHandler,
+                    child: const LoadingSpinner(height: 300));
               },
               loading: () {
                 List<String> leagueNames = ["الكل"];
@@ -86,11 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   shownDay: shownDay,
                   onPickDayHandler: onPickDayHandler,
                   onTapDayHandler: onTapDayHandler,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.green.shade300,
-                    ),
-                  ),
+                  child: const LoadingSpinner(height: 300),
                 );
               },
               error: ((errorMessage) => Center(
