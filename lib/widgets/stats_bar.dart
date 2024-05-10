@@ -16,6 +16,7 @@ class StatsBar extends StatelessWidget {
     double homePercentage = homeStat / (homeStat + awayStat);
     double awayPercentage = awayStat / (homeStat + awayStat);
 
+    const double BAR_WIDTH = 240;
     return Column(
       children: [
         Text(
@@ -39,12 +40,12 @@ class StatsBar extends StatelessWidget {
                 Container(
                   height: 6,
                   color: Colors.grey.shade600,
-                  width: homeStat != 0 ? homePercentage * 300 : 0,
+                  width: homeStat != 0 ? homePercentage * BAR_WIDTH : 0,
                 ),
                 Container(
                   height: 6,
                   color: Colors.green.shade300,
-                  width: awayStat != 0 ? awayPercentage * 300 : 0,
+                  width: awayStat != 0 ? awayPercentage * BAR_WIDTH : 0,
                 ),
               ],
             ),
