@@ -36,7 +36,17 @@ class LeagueTile extends StatelessWidget {
                       minimumSize: Size.zero, // Set this
                       padding: EdgeInsets.zero, // and this
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "/standings",
+                        arguments: {
+                          "leagueId": league.leagueId,
+                          "leagueSlug": league.leagueSlug,
+                          "leagueName": league.leagueName,
+                        },
+                      );
+                    },
                     icon: Icon(
                       Icons.chevron_left,
                       color: Colors.green.shade300,
