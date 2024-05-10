@@ -14,11 +14,20 @@ class MatchOverviewContainer extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          data.league.name,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, "/standings", arguments: {
+              "leagueName": data.league.name,
+              "leagueId": data.league.url.split("/")[0],
+              "leagueSlug": data.league.url.split("/")[1],
+            });
+          },
+          child: Text(
+            data.league.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
         ),
         Row(
