@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soccer_info/cubits/match_overview/match_overview_cubit.dart';
+import 'package:soccer_info/cubits/match_stats/match_stats_cubit.dart';
 import 'package:soccer_info/widgets/appbar.dart';
 import 'package:soccer_info/widgets/container/main_container.dart';
-import 'package:soccer_info/widgets/match_info_grid.dart';
-import 'package:soccer_info/widgets/match_score.dart';
-import 'package:soccer_info/widgets/scorers_list.dart';
-import 'package:soccer_info/widgets/team_tile.dart';
+import 'package:soccer_info/widgets/container/match_overview_container.dart';
+import 'package:soccer_info/widgets/container/match_statbars_container.dart';
+import 'package:soccer_info/widgets/container/match_stats_container.dart';
 
 class MatchScreen extends StatelessWidget {
   const MatchScreen({super.key});
@@ -16,101 +16,101 @@ class MatchScreen extends StatelessWidget {
     String matchId = data["id"];
 
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => MatchOverviewCubit())],
+      providers: [
+        BlocProvider(create: (context) => MatchOverviewCubit()),
+        BlocProvider(create: (context) => MatchStatsCubit())
+      ],
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(239, 241, 243, 1),
         appBar: const MyAppBar(),
-        body: MainContainer(
-          child: BlocBuilder<MatchOverviewCubit, MatchOverviewState>(
-            builder: (context, state) {
-              if (state == const MatchOverviewState.initial()) {
-                context.read<MatchOverviewCubit>().fetchMatchOverview(matchId);
-              }
-              return state.when(
-                initial: () {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.green.shade300,
-                    ),
-                  );
-                },
-                loading: () {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.green.shade300,
-                    ),
-                  );
-                },
-                success: (data) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        data.league.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: TeamTile(
-                              scale: 1.2,
-                              teamName: data.away.name,
-                              teamImg: data.away.img,
+        body: SingleChildScrollView(
+          child: MainContainer(
+            child: Column(
+              children: [
+                BlocBuilder<MatchOverviewCubit, MatchOverviewState>(
+                  builder: (context, state) {
+                    if (state == const MatchOverviewState.initial()) {
+                      context
+                          .read<MatchOverviewCubit>()
+                          .fetchMatchOverview(matchId);
+                    }
+                    return state.when(
+                      initial: () {
+                        return SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.green.shade300,
                             ),
                           ),
-                          Flexible(
-                            flex: 2,
-                            child: MatchScoreVarient(
-                              status: data.status,
-                              homeGoals: data.home.goals,
-                              awayGoals: data.away.goals,
+                        );
+                      },
+                      loading: () {
+                        return SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.green.shade300,
                             ),
                           ),
-                          Flexible(
-                            flex: 1,
-                            child: TeamTile(
-                              scale: 1.2,
-                              teamName: data.home.name,
-                              teamImg: data.home.img,
+                        );
+                      },
+                      success: (data) {
+                        return MatchOverviewContainer(data: data);
+                      },
+                      error: ((errorMessage) => Center(
+                            child: Text(errorMessage),
+                          )),
+                    );
+                  },
+                ),
+                BlocBuilder<MatchStatsCubit, MatchStatsState>(
+                  builder: (context, state) {
+                    if (state == const MatchStatsState.initial()) {
+                      context
+                          .read<MatchStatsCubit>()
+                          .fetchMatchOverview(matchId);
+                    }
+                    return state.when(
+                      initial: () {
+                        return MatchStatsContainer(
+                          child: SizedBox(
+                            height: 60,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.green.shade300,
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ScorersList(
-                            isAway: true,
-                            scorers: data.away.scorers,
                           ),
-                          ScorersList(
-                            isAway: false,
-                            scorers: data.home.scorers,
+                        );
+                      },
+                      loading: () {
+                        return MatchStatsContainer(
+                          child: SizedBox(
+                            height: 60,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.green.shade300,
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      const Divider(),
-                      MatchInfoGrid(info: data.info)
-                    ],
-                  );
-                },
-                error: ((errorMessage) => Center(
-                      child: Text(errorMessage),
-                    )),
-              );
-            },
+                        );
+                      },
+                      success: (data) {
+                        return MatchStatsContainer(
+                          child: MatchStatBarsContainer(data: data),
+                        );
+                      },
+                      error: ((errorMessage) => MatchStatsContainer(
+                            child: Center(
+                              child: Text(errorMessage),
+                            ),
+                          )),
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
