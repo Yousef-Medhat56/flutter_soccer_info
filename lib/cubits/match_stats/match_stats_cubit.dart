@@ -11,7 +11,7 @@ part 'match_stats_cubit.freezed.dart';
 class MatchStatsCubit extends Cubit<MatchStatsState> {
   MatchStatsCubit() : super(const MatchStatsState.initial());
 
-  fetchMatchOverview(String matchId) async {
+  fetchMatchStats(String matchId) async {
     try {
       emit(const MatchStatsState.loading());
       Dio dio = Dio();

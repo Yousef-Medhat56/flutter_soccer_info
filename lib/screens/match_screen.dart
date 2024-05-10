@@ -57,7 +57,7 @@ class MatchScreen extends StatelessWidget {
                       if (state == const MatchStatsState.initial()) {
                         context
                             .read<MatchStatsCubit>()
-                            .fetchMatchOverview(matchId);
+                            .fetchMatchStats(matchId);
                       }
                       return state.when(
                         initial: () {
